@@ -1,0 +1,24 @@
+# 数据库与抓取中间产物（可由代码重建，不进 git）
+*.db
+*.db-wal
+*.db-shm
+data/fulltext/
+data/full_49k.jsonl
+data/candidates.jsonl
+data/deaths_all.jsonl
+data/extracted*.json
+data/build_report.json
+data/build_meta.log
+
+# 渲染产物（笔记/站点/陈旧页均由代码重建，不进 git）
+out/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 日志与临时
+*.log
+.DS_Store
