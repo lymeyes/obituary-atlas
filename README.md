@@ -23,14 +23,36 @@
 jiaheji/
 ├── src/jiaheji/        # 入库(db.py / build_db.py)、渲染(render_*.py)、排除(excl.py)
 ├── scripts/            # dump 扫描(scan_tpl.py)、抽取、探针脚本
-├── data/               # 种子 + 索引 + 排除名单（进 git）
+├── data/               # 真源数据（全部进 git，可离线重建全库）
 │   ├── seed385.json         # 手工核校种子（权威）
-│   ├── tpl_people.jsonl     # 全量扫描生卒索引（49,042 人，1976–2025）
+│   ├── tpl_people.jsonl     # 全量扫描生卒索引（85,211 条命中 → 过滤后 49,042 人）
+│   ├── full_49k.jsonl.xz    # 30,128 人维基正文（xz 压缩，124.6 MB → 33.1 MB）
+│   ├── SHA256SUMS           # 真源校验和
 │   ├── title_overrides.json # 维基标题别名映射
 │   └── excluded.txt         # 用户排除名单（只打标，不删除数据）
 ├── out/site/           # 渲染出的静态站点（由代码重建，见 .gitignore）
+├── SOURCE-DATA.md      # 真源清单 + 从零重建手册（15 分钟）
 ├── build.sh            # 一键重建
 └── README.md
+```
+
+## 真源与灾备
+
+**本仓库自带可重建全库的真源数据**，无需依赖任何外部服务器或二次抓取：
+
+| 真源 | 体积 | 作用 |
+|---|---|---|
+| `data/tpl_people.jsonl` | 11.8 MB | 生卒索引（全部人物 + 日期，100% 结构化）|
+| `data/full_49k.jsonl.xz` | 33.1 MB | 30,128 人维基正文（4,170 万字）|
+| `data/seed385.json` | 0.13 MB | 386 人手工核校权威值 |
+
+数据库（162 MB）、静态站点（218 MB）、Obsidian 笔记（252 MB）**均不入库**——它们是纯派生数据，可由上面三个真源在 15 分钟内重建。完整步骤见 **[SOURCE-DATA.md](SOURCE-DATA.md)**。
+
+```bash
+git clone https://github.com/lymeyes/obituary-atlas.git && cd obituary-atlas
+xz -dk data/full_49k.jsonl.xz
+python3 src/jiaheji/build_db.py && python3 src/jiaheji/build_db.py merge
+python3 src/jiaheji/render_site.py
 ```
 
 ## 构建流程
@@ -61,15 +83,18 @@ git push origin HEAD:gh-pages
 
 ## 本地离线版（Obsidian）
 
-`scripts/gen_obsidian_notes.py` 可把数据库全量导出为 Obsidian 笔记（一人一篇，YAML frontmatter 含 `born`/`died`/`category`/`cause_cat`/`region`/`tags`/`status`，天然支持 Dataview 检索）：
+`scripts/gen_obsidian_notes.py` 可把数据库全量导出为 Obsidian 笔记（一人一篇，YAML frontmatter 含 `born`/`died`/`category`/`origin`/`cause_cat`/`region`/`tags`/`status`，天然支持 Dataview 检索）：
 
 ```bash
-python3 scripts/gen_obsidian_notes.py --dry     # 预览将要写入的数量
-python3 scripts/gen_obsidian_notes.py --limit 5 # 试写 5 篇核验格式
-python3 scripts/gen_obsidian_notes.py           # 全量导出
+python3 scripts/gen_obsidian_notes.py --dry        # 预览将要写入的数量
+python3 scripts/gen_obsidian_notes.py --limit 5    # 试写 5 篇核验格式
+python3 scripts/gen_obsidian_notes.py              # 全量导出（跳过已存在的笔记）
+python3 scripts/gen_obsidian_notes.py --overwrite  # 重写生成器自己的产物（精校笔记仍不碰）
 ```
 
-已存在的手工精校笔记会被**跳过、绝不覆盖**，因此增量重跑安全。当前导出规模：49,158 篇（其中 30,856 篇含维基全文，约 252 MB），适合只做本地/NAS 同步、不进 git。
+手工精校笔记靠正文里的固定标记识别，**永远不会被覆盖**，因此增量重跑与全量重跑都安全。当前导出规模：49,158 篇（其中 30,856 篇含维基全文，约 252 MB），适合只做本地/NAS 同步、不进 git。
+
+字段口径：`category` 为维基分类里首个职业/身份类标签；籍贯类分类（「上海人」「東京市出身人物」）已剥离到 `origin`，奖项/家族/校友类则直接丢弃，避免污染「领域」分组。
 
 ## 数据规模
 
