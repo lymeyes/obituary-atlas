@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 """NUC 上运行：批量从 zhwiki FTS 取 1976-2025 人物正文 + 抽死因/摘要
 
-用法：python3 fetch_full.py <tpl_people.jsonl> <out.jsonl>
-- 对每个标题走 title_tok 短语 FTS，取 text + categories
-- 死因抽取基于已知逝世年（来自生卒模板），在导语区配对死亡词+死因词，比自由文本配对可靠
+用法：
+  python3 fetch_full.py <tpl.jsonl> <out.jsonl> [skip] [limit]
+- 对每个标题走 title_tok 短语 FTS（参数化，避免特殊字符导致语法错误）
+- 单个标题异常会被捕获并跳过，不中断整体
+- 支持分片：skip/limit 按行号切片，可多进程并行加速
 - 输出 jsonl: {title, text, cats, cause, bio_short, dy}
 """
-import json, sqlite3, re, sys
+import json, sqlite3, re, sys, os, time
 
 DB = "/home/liuyimin/jiaheji-data/zhwiki.db"
 
@@ -15,7 +17,6 @@ DEATH = re.compile(
     r"(逝世|去世|過世|辞世|辭世|病故|身故|殉职|殉國|殉国|遇害|遇难|罹难|被害|"
     r"自殺|自杀|亡故|溘然|瞑目|长眠|作古|谢世|與世長辭|与世长辞|心脏骤停|"
     r"心源性猝死|抢救无效|不治身亡|溘逝|逝去|离世|離世|卒|殁|歿|死)")
-# 死因关键词（用于从死亡句里截取病因短语）
 CAUSE_W = re.compile(
     r"(癌|肿瘤|腫瘤|白血病|淋巴瘤|肉瘤|心|脑|腦|梗|溢血|溢血|中风|中風|衰竭|"
     r"肺|肝|肾|腎|糖尿|感染|肺炎|结核|結核|病毒|艾滋|愛滋|车祸|車禍|空难|空難|"
@@ -33,13 +34,17 @@ def tok(s: str) -> str:
 
 
 def fts(con, title: str):
-    q = 'title_tok:"%s"' % tok(title)
-    for row in con.execute("SELECT title, text, categories FROM docs WHERE docs MATCH ?", (q,)):
+    """参数化 FTS，返回 (text, cats) 或 (None, None)。异常向上抛，由调用方捕获。"""
+    q = 'title_tok:"%s"' % tok(title).replace('"', '""')
+    # 仅取前 50 个命中，避免极端情况下大结果集拖慢
+    rows = con.execute(
+        "SELECT title, text, categories FROM docs WHERE docs MATCH ? LIMIT 50", (q,)).fetchall()
+    for row in rows:
         if row[0] == title:
             return row[1], row[2]
-    r = con.execute(
-        "SELECT title, text, categories FROM docs WHERE docs MATCH ? LIMIT 1", (q,)).fetchone()
-    return (r[1], r[2]) if r else (None, None)
+    if rows:  # 无精确匹配，退而取首个（别名/重定向）
+        return rows[0][1], rows[0][2]
+    return None, None
 
 
 def pick_cause(text: str, dy):
@@ -70,20 +75,37 @@ def pick_bio(text: str):
 def main():
     tpl = sys.argv[1] if len(sys.argv) > 1 else "/tmp/tpl_people.jsonl"
     outp = sys.argv[2] if len(sys.argv) > 2 else "/home/liuyimin/jiaheji-data/full_49k.jsonl"
-    con = sqlite3.connect(DB)
+    skip = int(sys.argv[3]) if len(sys.argv) > 3 else 0
+    limit = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+
+    con = sqlite3.connect("file:%s?mode=ro" % DB, uri=True)
     con.row_factory = sqlite3.Row
     rows = [json.loads(l) for l in open(tpl, encoding="utf-8")]
+    if limit:
+        rows = rows[skip:skip + limit]
+    else:
+        rows = rows[skip:]
+
     out = open(outp, "w", encoding="utf-8")
     n = 0
     miss = 0
+    err = 0
+    t0 = time.time()
     for r in rows:
-        title = r.get("t")
+        title = r.get("t")               # 原始标题（用于输出/merge 对齐）
         if not title:
             continue
+        lookup = r.get("t_simp") or title  # 简体标题（与 FTS 索引一致，降低 miss）
         dy = r.get("dy")
         if not dy or not (1976 <= int(dy) <= 2025):
             continue
-        text, cats = fts(con, title)
+        try:
+            text, cats = fts(con, lookup)
+        except Exception as e:
+            err += 1
+            if err <= 5:
+                sys.stderr.write("ERR %s: %s\n" % (title, e))
+            continue
         if not text:
             miss += 1
             continue
@@ -96,10 +118,12 @@ def main():
             "dy": dy,
         }, ensure_ascii=False) + "\n")
         n += 1
-        if n % 5000 == 0:
-            sys.stderr.write("fetched %d / miss %d\n" % (n, miss))
+        if n % 500 == 0:
+            el = time.time() - t0
+            sys.stderr.write("fetched %d / miss %d / err %d (%.1f/s)\n" % (n, miss, err, n / el))
+            sys.stderr.flush()
     out.close()
-    sys.stderr.write("DONE fetched=%d miss=%d\n" % (n, miss))
+    sys.stderr.write("DONE fetched=%d miss=%d err=%d\n" % (n, miss, err))
 
 
 if __name__ == "__main__":
