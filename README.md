@@ -2,6 +2,8 @@
 
 > 自 1976 年以来的逝者图谱：带索引、可查询的生平事迹可视化档案。
 
+**在线访问：<https://lymeyes.github.io/obituary-atlas/>**
+
 ## 项目简介
 
 驾鹤集是一个从中文维基百科全量 XML dump 解析出生卒信息、构建「1976-01-01 至今逝世人物」结构化档案的开源项目。核心交付物是一个**静态站点**（名录 / 日历 / 年表 / 统计 + 每人生平详情），可通过 GitHub Pages 公开访问，支持按姓名、年份、领域、地区检索；每个人物的生平、主要成就与死因均可溯源至维基百科原文。
@@ -43,13 +45,43 @@ python3 src/jiaheji/render_notes.py    # 5. 渲染 Obsidian 笔记（可选）
 
 ## 部署（GitHub Pages）
 
-将 `out/site/` 发布到 GitHub Pages（单独分支或 `/docs` 目录）即可获得公开可查的「图表」站点。站点为纯静态、无外部依赖，可直接被 Obsidian 的 iframe 或任意静态托管加载。
+站点已发布在 **`gh-pages` 分支根目录**（站点文件直接位于分支根，不是 `out/site/` 子目录），GitHub Pages 设为 `gh-pages` + `/(root)` 即可访问 <https://lymeyes.github.io/obituary-atlas/>。
+
+重新发布：
+
+```bash
+rsync -a out/site/ /tmp/ghpages_root/
+git checkout --orphan gh-pages
+git --work-tree=/tmp/ghpages_root --git-dir=.git add -A
+git -c commit.gpgsign=false commit -m "site: publish"
+git push origin HEAD:gh-pages
+```
+
+站点为纯静态、无外部依赖，可直接被 Obsidian 的 iframe 或任意静态托管加载。
+
+## 本地离线版（Obsidian）
+
+`scripts/gen_obsidian_notes.py` 可把数据库全量导出为 Obsidian 笔记（一人一篇，YAML frontmatter 含 `born`/`died`/`category`/`cause_cat`/`region`/`tags`/`status`，天然支持 Dataview 检索）：
+
+```bash
+python3 scripts/gen_obsidian_notes.py --dry     # 预览将要写入的数量
+python3 scripts/gen_obsidian_notes.py --limit 5 # 试写 5 篇核验格式
+python3 scripts/gen_obsidian_notes.py           # 全量导出
+```
+
+已存在的手工精校笔记会被**跳过、绝不覆盖**，因此增量重跑安全。当前导出规模：49,158 篇（其中 30,856 篇含维基全文，约 252 MB），适合只做本地/NAS 同步、不进 git。
 
 ## 数据规模
 
-- 全量索引：**49,042** 位 1976–2025 逝世人物（全球维基）。
-- 分层：T1 顶级（条目 ≥1.2 万字）5,930 / T2 重要 17,783 / T3 一般 25,329。
-- 深度档案：seed 386 人 + T1/T2 从维基正文补全生平、成就与死因。
+| 项 | 数量 |
+|---|---|
+| 全量索引（1976–2025 逝世） | **49,157** 人 |
+| 含完整维基生平 | **30,128** 人（约 4,170 万字）|
+| 仅生卒日期 + 维基链接 | 18,912 人（维基本地库无独立词条）|
+| 手工精校种子 | 386 人 |
+| 分层（按正文字数） | T1 ≥1.2 万字 / T2 ≥4 千字 / T3 其余 |
+
+> 正文覆盖率约 61%：对 18,914 个未命中项做过繁体优先双查补漏测试，命中率仅 0.5%，说明这是数据源（本地 zhwiki 镜像）的实际上限，而非抽取逻辑缺陷。
 
 ## License
 
