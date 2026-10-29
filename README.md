@@ -53,4 +53,9 @@ python3 src/jiaheji/render_notes.py    # 5. 渲染 Obsidian 笔记（可选）
 
 ## License
 
-数据源自维基百科，遵循 CC BY-SA 4.0。代码采用 MIT。
+本项目整体采用 **CC BY-SA 4.0**（Attribution-ShareAlike 4.0 International）。
+
+- **数据**（生卒索引、从维基百科抽取的人物条目正文与死因）：源自中文维基百科，依其授权必须署名并以相同方式共享，故统一以 CC BY-SA 4.0 发布。
+- **代码**（本仓库的 Python 源码与脚本）：同样以 CC BY-SA 4.0 授权，与数据保持一致、避免合规分歧。
+
+使用本项目内容时，请保留署名并注明出处（中文维基百科），且任何衍生作品须以 CC BY-SA 4.0 共享。
