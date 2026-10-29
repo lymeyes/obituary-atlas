@@ -108,6 +108,9 @@ def build_note(p: dict, raw: dict or None):
         fm.append("aliases: [" + ", ".join(yq(a) for a in aliases) + "]")
     if born:
         fm.append(f"born: {born}")
+        by = born[:4]
+        if by.isdigit():
+            fm.append(f"born_year: {int(by)}")
     if died:
         fm.append(f"died: {died}")
         dy = died[:4]
