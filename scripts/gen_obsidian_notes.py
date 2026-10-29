@@ -110,6 +110,9 @@ def build_note(p: dict, raw: dict or None):
         fm.append(f"born: {born}")
     if died:
         fm.append(f"died: {died}")
+        dy = died[:4]
+        if dy.isdigit():
+            fm.append(f"died_year: {int(dy)}")
     if cause:
         fm.append(f"cause: {yq(cause)}")
     if cause_cat:
