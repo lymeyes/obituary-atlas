@@ -186,7 +186,13 @@ def merge_full():
                 con.execute("INSERT INTO timeline (person_id, year, event) VALUES (?,?,?)",
                             (pid, None, a))
             if cats:
-                occ = json.loads(con.execute("SELECT occupation FROM person WHERE id=?", (pid,)).fetchone()["occupation"] or "{}")
+                raw_occ = con.execute("SELECT occupation FROM person WHERE id=?", (pid,)).fetchone()["occupation"] or "[]"
+                try:
+                    occ = json.loads(raw_occ)
+                except Exception:
+                    occ = []
+                if not isinstance(occ, dict):
+                    occ = {}
                 occ["wiki分类"] = cats[:8]
                 con.execute("UPDATE person SET occupation=?, cat=? WHERE id=?",
                             (json.dumps(occ, ensure_ascii=False), (cats[0] if cats else None), pid))
