@@ -22,6 +22,7 @@
 ```
 jiaheji/
 ├── src/jiaheji/        # 入库(db.py / build_db.py)、渲染(render_*.py)、排除(excl.py)
+├── reader/             # 离线人物浏览器（build_jiahe.py 生成器 + web/ 前端模板 + detect_nonperson.py 审计）
 ├── scripts/            # dump 扫描(scan_tpl.py)、抽取、探针脚本
 ├── data/               # 真源数据（全部进 git，可离线重建全库）
 │   ├── seed385.json         # 手工核校种子（权威）
@@ -96,6 +97,31 @@ python3 scripts/gen_obsidian_notes.py --overwrite  # 重写生成器自己的产
 
 字段口径：`category` 为维基分类里首个职业/身份类标签；籍贯类分类（「上海人」「東京市出身人物」）已剥离到 `origin`，奖项/家族/校友类则直接丢弃，避免污染「领域」分组。
 
+## 离线人物浏览器（reader/）
+
+除在线站点和 Obsidian 笔记外，仓库附带一个**零依赖离线浏览器**：双击 `index.html` 即可在浏览器打开，无需服务器、无需 python，专为「在 Obsidian 之外也能随手翻查」设计。
+
+- `reader/build_jiahe.py` —— 数据生成器。读取 `render_notes.py` 产出的 `名人逝世/*.md`，输出到 `~/Obsidian/Bookshelf/阅读器-驾鹤集/`（index.html + app.js + style.css + data/*.js，约 130 MB，**不入库**）。
+- `reader/web/` —— 前端模板（三栏：名录 / 筛选 / 详情 + 年代图表视图 + 全文/标签检索）。
+- `reader/detect_nonperson.py` —— 非人物条目审计脚本（见下）。
+
+```bash
+python3 reader/build_jiahe.py                 # 全量重建阅读器
+python3 reader/build_jiahe.py --limit 3000    # 试跑
+python3 reader/detect_nonperson.py            # 审计当前 data/，输出非人物清单 TSV
+python3 reader/detect_nonperson.py --emit-keep  # 同时生成应剔除的姓名集合（写 excluded.txt 前用）
+```
+
+技术范式与诗词阅读器一致：小入口 + 分片懒加载，全部走 `<script>` 注入，`file://` 双击即开。
+
+### 数据质量：非人物条目治理
+
+数据源从维基「XXXX年逝世人物列表」采集链接，列表中混有**事件、列表页、组织、动物、以及重定向错配**条目，被一律当人物收录。全库审计确认 **181 条（0.37%）非人物**：事件/案件 128、动物 25、组织/团体 12、列表/年表 10、时间戳残留 4、非人概念 1、引号怪异名 1。
+
+这些已在 `data/excluded.txt` 中按姓名排除——仅给 `person.excluded` 打标记，**原始数据不删、可逆**（删掉名单行重跑即恢复）。阅读器构建时自动读取该名单过滤。后续补新年份数据时，先跑 `detect_nonperson.py` 审计，再人工确认后追加到 `excluded.txt`。
+
+> 注意：`detect_nonperson.py` 与 `build_jiahe.py` 读取的 `data/` 是**阅读器产物**（`~/Obsidian/Bookshelf/阅读器-驾鹤集/data`），不是仓库 `data/`。需先构建一次阅读器，审计才有数据可读。
+
 ## 数据规模
 
 | 项 | 数量 |
@@ -105,6 +131,8 @@ python3 scripts/gen_obsidian_notes.py --overwrite  # 重写生成器自己的产
 | 仅生卒日期 + 维基链接 | 18,912 人（维基本地库无独立词条）|
 | 手工精校种子 | 386 人 |
 | 分层（按正文字数） | T1 ≥1.2 万字 / T2 ≥4 千字 / T3 其余 |
+
+> 另有 **181 条非人物条目**（事件/动物/团体/列表/时间戳残留/非人概念）已在 `data/excluded.txt` 标记排除，离线浏览器（`reader/`）不收录，有效 **48,970** 人。详见「离线人物浏览器」一节。
 
 > 正文覆盖率约 61%：对 18,914 个未命中项做过繁体优先双查补漏测试，命中率仅 0.5%，说明这是数据源（本地 zhwiki 镜像）的实际上限，而非抽取逻辑缺陷。
 

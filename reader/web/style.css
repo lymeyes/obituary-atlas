@@ -1,0 +1,137 @@
+/* 驾鹤集 · 人物档案浏览器 —— 纸墨风格（与诗词阅读器同一套色板） */
+:root{
+  --bg:#f6f2e9; --bg2:#fbf8f1; --ink:#24211c; --ink2:#5d564a; --ink3:#8d8475;
+  --line:#e0d8c8; --accent:#8a5a3b; --accent2:#b98b5e; --mark:#f3e2b6;
+  --serif:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC",serif;
+  --sans:-apple-system,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#15161a; --bg2:#1b1d22; --ink:#e6e2d8; --ink2:#a9a397; --ink3:#7a7468;
+         --line:#2b2e35; --accent:#c99a6d; --accent2:#8a6647; --mark:#4a3d22; }
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+     font-size:14px;display:flex;flex-direction:column;overflow:hidden}
+
+/* ---------- 顶栏 ---------- */
+header{display:flex;align-items:center;gap:14px;padding:10px 16px;
+       background:var(--bg2);border-bottom:1px solid var(--line);flex:0 0 auto}
+.brand{font-family:var(--serif);font-size:19px;letter-spacing:2px;white-space:nowrap}
+.brand #hint{font-family:var(--sans);font-size:11px;color:var(--ink3);letter-spacing:0;margin-left:8px}
+.searchbox{display:flex;gap:6px;flex:1;min-width:0}
+#q{flex:1;min-width:0;padding:7px 12px;border:1px solid var(--line);border-radius:4px;
+   background:var(--bg);color:var(--ink);font-size:14px;font-family:var(--sans)}
+#q:focus{outline:none;border-color:var(--accent2)}
+select,button{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--bg);
+   border:1px solid var(--line);border-radius:4px;padding:6px 8px;cursor:pointer}
+button:hover,select:hover{border-color:var(--accent2);color:var(--accent)}
+.tools{display:flex;gap:6px}
+
+/* ---------- 筛选条 ---------- */
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:7px 16px;background:var(--bg2);
+       border-bottom:1px solid var(--line);flex:0 0 auto;min-height:34px;align-items:center}
+.chips .none{font-size:12px;color:var(--ink3)}
+.chip{font-size:12px;color:var(--ink2);background:var(--bg);border:1px solid var(--line);
+      border-radius:20px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.chip b{color:var(--accent);font-weight:600}
+.chip:hover{border-color:var(--accent2)}
+.chip.stat{background:none;border:none;cursor:default;color:var(--ink3)}
+
+/* ---------- 布局 ---------- */
+main{flex:1;display:flex;min-height:0}
+aside{width:208px;flex:0 0 208px;border-right:1px solid var(--line);background:var(--bg2);
+      display:flex;flex-direction:column;overflow-y:auto;padding-bottom:12px}
+.pane-title{font-size:11px;color:var(--ink3);letter-spacing:1px;padding:12px 12px 6px;
+      border-top:1px solid var(--line);margin-top:4px;display:flex;justify-content:space-between}
+.pane-title:first-child{border-top:none;margin-top:0}
+.pane-title span{color:var(--ink3);font-size:10px}
+.facets{display:flex;flex-wrap:wrap;gap:4px;padding:0 10px}
+.facets.scroll{max-height:260px;overflow-y:auto}
+.facets .f{font-size:12px;padding:3px 7px;border:1px solid transparent;border-radius:3px;
+      color:var(--ink2);cursor:pointer;background:none;white-space:nowrap}
+.facets .f:hover{background:var(--mark);color:var(--ink)}
+.facets .f.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.facets .f i{font-style:normal;color:var(--ink3);font-size:10px;margin-left:3px}
+.facets .f.on i{color:#f0e4d6}
+.range{display:flex;align-items:center;gap:5px;padding:0 12px}
+.range input{flex:1;min-width:0;padding:4px 6px;border:1px solid var(--line);border-radius:3px;
+      background:var(--bg);color:var(--ink);font-size:12px;font-family:var(--sans)}
+.range span{color:var(--ink3);font-size:11px}
+.mini{margin:0 12px 4px;width:calc(100% - 24px);padding:4px 8px;border:1px solid var(--line);
+      border-radius:3px;background:var(--bg);color:var(--ink);font-size:12px;font-family:var(--sans)}
+.mini:focus{outline:none;border-color:var(--accent2)}
+
+/* ---------- 列表 ---------- */
+.list{width:352px;flex:0 0 352px;display:flex;flex-direction:column;border-right:1px solid var(--line);
+      min-width:0}
+.listhead{padding:8px 12px;border-bottom:1px solid var(--line);display:flex;gap:8px;
+      align-items:center;background:var(--bg2);flex:0 0 auto;font-size:12px;color:var(--ink3)}
+.listhead b{color:var(--ink);font-weight:600}
+.listhead select{margin-left:auto;font-size:12px;padding:4px 6px}
+.rows{flex:1;overflow-y:auto}
+.row{display:flex;gap:9px;padding:8px 12px;border-bottom:1px solid var(--line);cursor:pointer;
+     align-items:baseline}
+.row:hover{background:var(--bg2)}
+.row.on{background:var(--mark)}
+.row .nm{font-family:var(--serif);font-size:15px;flex:1;min-width:0;overflow:hidden;
+     text-overflow:ellipsis;white-space:nowrap}
+.row .yr{font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .rg{font-size:10px;color:var(--accent2);border:1px solid var(--line);border-radius:2px;
+     padding:0 3px;white-space:nowrap}
+.pager{padding:8px 12px;border-top:1px solid var(--line);display:flex;gap:6px;align-items:center;
+      justify-content:center;background:var(--bg2);flex:0 0 auto;font-size:12px;color:var(--ink3)}
+.pager button{padding:3px 9px;font-size:12px}
+
+/* ---------- 详情 ---------- */
+.read{flex:1;overflow-y:auto;padding:26px 34px 60px;min-width:0}
+.read .empty{color:var(--ink3);font-size:13px;padding-top:40px;text-align:center}
+.read h1{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:2px;margin:0 0 4px}
+.read .sub{font-size:12px;color:var(--ink3);margin-bottom:18px}
+.read .sub a{color:var(--accent);text-decoration:none}
+.read .sub a:hover{text-decoration:underline}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);margin:0 0 22px}
+.kv div{background:var(--bg2);padding:9px 11px}
+.kv dt{font-size:10px;color:var(--ink3);letter-spacing:1px;margin:0 0 3px}
+.kv dd{margin:0;font-size:14px;font-variant-numeric:tabular-nums}
+.read .bio{font-family:var(--serif);font-size:16.5px;line-height:1.95;color:var(--ink);
+     white-space:pre-wrap;word-break:break-word;max-width:44em}
+.read .bio p{margin:0 0 1.1em}
+.read h4{font-size:12px;color:var(--ink3);letter-spacing:1px;font-weight:600;
+     margin:26px 0 8px;border-top:1px solid var(--line);padding-top:14px}
+.trunc{margin-top:14px;font-size:12px;color:var(--ink3)}
+.trunc a{color:var(--accent);text-decoration:none}
+.rawcat{font-size:11.5px;color:var(--ink3);margin:-14px 0 18px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tags span{font-size:11.5px;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);
+     border-radius:3px;padding:2px 7px;cursor:pointer}
+.tags span:hover{border-color:var(--accent2);color:var(--accent)}
+mark{background:var(--mark);color:inherit;padding:0 1px}
+
+/* ---------- 图表 ---------- */
+.charts{flex:1;overflow-y:auto;padding:20px 26px 40px;display:flex;flex-wrap:wrap;gap:22px;
+     align-content:flex-start}
+.chartbox{background:var(--bg2);border:1px solid var(--line);padding:14px 16px 8px;
+     flex:1 1 420px;min-width:320px}
+.chartbox.wide{flex:1 1 100%}
+.ctitle{font-size:12.5px;color:var(--ink2);margin-bottom:10px;letter-spacing:.5px}
+.ctitle small{color:var(--ink3);margin-left:8px;font-size:11px}
+canvas{width:100%;display:block;cursor:pointer}
+
+/* ---------- 遮罩 ---------- */
+#mask{position:fixed;inset:0;background:rgba(36,33,28,.42);display:flex;align-items:center;
+      justify-content:center;z-index:99}
+#mask[hidden]{display:none}
+.maskbox{background:var(--bg2);padding:20px 26px;border-radius:6px;min-width:300px;
+      box-shadow:0 8px 30px rgba(0,0,0,.2)}
+#mtext{font-size:13px;color:var(--ink2);margin-bottom:10px}
+.bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent2);transition:width .15s}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent2)}
+::-webkit-scrollbar-track{background:transparent}

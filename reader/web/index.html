@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>驾鹤集 · 人物档案浏览器</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">驾鹤集<span id="hint">载入中…</span></div>
+  <div class="searchbox">
+    <input id="q" type="search" placeholder="搜姓名 / 别名 / 身份标签…（按 / 聚焦）" autocomplete="off" spellcheck="false">
+    <select id="mode" title="检索范围">
+      <option value="meta">姓名·标签</option>
+      <option value="full">生平全文</option>
+    </select>
+  </div>
+  <div class="tools">
+    <button id="btn-view" title="切换视图">列 表</button>
+    <button id="btn-random" title="随机一人 (r)">随 机</button>
+  </div>
+</header>
+
+<div id="chips" class="chips"></div>
+
+<main id="main">
+  <aside>
+    <div class="pane-title">逝世年代</div>
+    <div id="decades" class="facets"></div>
+
+    <div class="pane-title">生年区间</div>
+    <div class="range">
+      <input id="byA" type="number" placeholder="起" min="1800" max="2030">
+      <span>—</span>
+      <input id="byB" type="number" placeholder="止" min="1800" max="2030">
+    </div>
+
+    <div class="pane-title">领域<span id="ccount"></span></div>
+    <div id="cats" class="facets scroll"></div>
+
+    <div class="pane-title">核实状态</div>
+    <div id="sts" class="facets"></div>
+  </aside>
+
+  <section class="list">
+    <div id="listhead" class="listhead"></div>
+    <div id="rows" class="rows"></div>
+    <div id="pager" class="pager"></div>
+  </section>
+
+  <article id="read" class="read">
+    <div class="empty">← 从中间列表点选一位，或直接搜索</div>
+  </article>
+</main>
+
+<section id="charts" class="charts" hidden>
+  <div class="chartbox">
+    <div class="ctitle">每十年逝世人数 <small>点击柱子可筛选</small></div>
+    <canvas id="c-die" height="260"></canvas>
+  </div>
+  <div class="chartbox">
+    <div class="ctitle">每十年出生人数 <small>反映收录人群的世代结构</small></div>
+    <canvas id="c-born" height="260"></canvas>
+  </div>
+  <div class="chartbox wide">
+    <div class="ctitle">享年分布 <small id="agehint"></small></div>
+    <canvas id="c-age" height="240"></canvas>
+  </div>
+</section>
+
+<div id="mask" hidden>
+  <div class="maskbox">
+    <div id="mtext">加载中…</div>
+    <div class="bar"><i id="mbar"></i></div>
+  </div>
+</div>
+
+<script src="data/catalog.js"></script>
+<script src="data/jh.idx.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
