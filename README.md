@@ -122,6 +122,31 @@ python3 reader/detect_nonperson.py --emit-keep  # 同时生成应剔除的姓名
 
 > 注意：`detect_nonperson.py` 与 `build_jiahe.py` 读取的 `data/` 是**阅读器产物**（`~/Obsidian/Bookshelf/阅读器-驾鹤集/data`），不是仓库 `data/`。需先构建一次阅读器，审计才有数据可读。
 
+## 群星纪年（starmap/，2026-11-05 新增）
+
+**时空可视化版**：把 4.9 万条档案从「表格查数据库」改造成拉动时间轴看群星依次亮起的世界星图。
+单 HTML + 一个内嵌数据 JS，`file://` 直开、零外部请求、无后端、无地图 API/key。
+
+| 路径 | 作用 |
+|---|---|
+| `starmap/web/index.html` | 前端真源（CSS/JS 全内嵌）；运行副本在 `~/Obsidian/Bookshelf/驾鹤集星图/index.html` |
+| `starmap/build_starmap.py` | 从 `data/jiaheji.db` + `raw` 生成 `window.JHSTAR`（约 15MB，生成物不入库） |
+| `starmap/geo/` | Natural Earth 110m 陆地 + 177 国几何（公有领域；前者绘制海岸线，后者仅算国家中心点） |
+| `starmap/docs/时空可视化.md` | 工程复现说明、合规设计、CDP 验证数据 |
+| `starmap/docs/使用说明.md` | 面向使用者（与 Bookshelf 内 README 同源） |
+
+```bash
+python3 starmap/build_starmap.py --check   # 统计：覆盖率 / 地区 / 年份
+python3 starmap/build_starmap.py           # 重建 Bookshelf/驾鹤集星图/data/starmap.js
+```
+
+支持年 / 月 / 日三档时间轴、播放、领域与地区筛选、星点 hover 与详情、地址栏深链。
+地区是**按维基分类与正文加权推断**的定位参考值（库里 `region` 仅 0.8% 有值），
+已定位 61.2%，未定位者不落地图但完整进名单；日期精度不足者在月/日档明确提示，不伪造日期。
+
+**地图合规**：底图只用无国界的海岸线剪影，不绘制任何国界/行政边界；不调用任何在线地图服务，
+页面零外部请求；地区名统一写作「中国台湾 / 中国香港 / 中国澳门」。详见工程说明。
+
 ## 数据规模
 
 | 项 | 数量 |
