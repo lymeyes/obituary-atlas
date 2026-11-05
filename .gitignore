@@ -22,3 +22,6 @@ venv/
 # 日志与临时
 *.log
 .DS_Store
+
+# 星图联网补全的原始批次缓存（可用 fetch_wikidata.py 重新查；汇总真源 wd_regions.json 保留）
+starmap/data/wdcache/

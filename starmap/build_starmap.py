@@ -189,7 +189,7 @@ REGIONS: list[tuple[str, str | None, str, list[float], bool]] = [
     ("捷克", "Czechia", r"捷克|Czech|布拉格", [15.3, 49.8], False),
     ("匈牙利", "Hungary", r"匈牙利|Hungary|布達佩斯|布达佩斯", [19.5, 47.2], False),
     ("罗马尼亚", "Romania", r"羅馬尼亞|罗马尼亚|Romania", [25.0, 46.0], False),
-    ("保加利亚", "Bulgaria", r"保加利亞|保利亚|Bulgaria", [25.0, 42.8], False),
+    ("保加利亚", "Bulgaria", r"保加利亞|保加利亚|Bulgaria", [25.0, 42.8], False),
     ("塞尔维亚", "Serbia", r"塞爾維亞|塞尔维亚|南斯拉夫|Yugoslav", [21.0, 44.0], False),
     ("克罗地亚", "Croatia", r"克羅地亞|克罗地亚|Croatia", [16.4, 45.3], False),
     ("乌克兰", "Ukraine", r"烏克蘭|乌克兰|Ukraine|基輔|基辅", [31.5, 49.0], False),
@@ -202,7 +202,7 @@ REGIONS: list[tuple[str, str | None, str, list[float], bool]] = [
     ("黎巴嫩", None, r"黎巴嫩|Lebanon", [35.9, 33.9], False),
     ("约旦", "Jordan", r"約旦|约旦|Jordan", [36.2, 30.6], False),
     ("沙特", "Saudi Arabia", r"沙特|沙烏地|Saudi", [45.0, 24.0], False),
-    ("阿联酋", "United Arab Emirates", r"阿聯酋|阿联酋|UAE|杜拜|迪拜", [54.0, 24.0], False),
+    ("阿联酋", "United Arab Emirates", r"阿聯酋|阿联酋|阿拉伯聯合大公國|阿拉伯联合酋长国|UAE|杜拜|迪拜", [54.0, 24.0], False),
     ("卡塔尔", None, r"卡塔爾|卡塔尔|Qatar", [51.2, 25.3], False),
     ("埃及", "Egypt", r"埃及|Egypt|開羅|开罗", [30.0, 26.8], False),
     ("南非", "South Africa", r"南非|South\s?Africa", [25.0, -29.0], False),
@@ -216,7 +216,7 @@ REGIONS: list[tuple[str, str | None, str, list[float], bool]] = [
     ("苏丹", "Sudan", r"蘇丹|苏丹|Sudan", [30.0, 15.5], False),
     ("刚果（金）", "Dem. Rep. Congo", r"剛果|刚果|Congo", [23.5, -2.8], False),
     ("津巴布韦", "Zimbabwe", r"津巴布韋|津巴布韦|Zimbabwe", [29.8, -19.0], False),
-    ("加纳", "Ghana", r"加納|加纳|Ghana", [-1.0, 7.9], False),
+    ("加纳", "Ghana", r"加納|迦納|加纳|Ghana", [-1.0, 7.9], False),
     ("坦桑尼亚", "Tanzania", r"坦桑尼亞|坦桑尼亚|Tanzania", [34.9, -6.4], False),
     ("墨西哥", "Mexico", r"墨西哥|Mexico", [-102.0, 23.5], False),
     ("巴西", "Brazil", r"巴西|Brazil", [-52.0, -12.0], False),
@@ -248,7 +248,7 @@ REGIONS: list[tuple[str, str | None, str, list[float], bool]] = [
     ("冰岛", "Iceland", r"冰島|冰岛|Iceland", [-19.0, 64.8], False),
     ("塞浦路斯", None, r"塞浦路斯|Cyprus", [33.2, 35.1], False),
     ("阿尔巴尼亚", "Albania", r"阿爾巴尼亞|阿尔巴尼亚|Albania", [20.0, 41.1], False),
-    ("斯洛文尼亚", "Slovenia", r"斯洛維尼亞|斯洛文尼亚|Slovenia", [14.8, 46.1], False),
+    ("斯洛文尼亚", "Slovenia", r"斯洛維尼亞|斯洛文尼亞|斯洛文尼亚|Slovenia", [14.8, 46.1], False),
     ("斯洛伐克", "Slovakia", r"斯洛伐克|Slovakia", [19.7, 48.7], False),
     ("立陶宛", "Lithuania", r"立陶宛|Lithuania", [23.9, 55.2], False),
     ("拉脱维亚", "Latvia", r"拉脫維亞|拉脱维亚|Latvia", [24.9, 56.9], False),
@@ -279,7 +279,77 @@ REGIONS: list[tuple[str, str | None, str, list[float], bool]] = [
     ("马里", "Mali", r"馬里|马里|Mali", [-3.5, 17.0], False),
     ("乍得", "Chad", r"乍得|Chad", [18.7, 15.3], False),
     ("卢森堡", None, r"盧森堡|卢森堡|Luxembourg", [6.1, 49.7], False),
-    ("马耳他", None, r"馬爾他|马耳他|Malta", [14.4, 35.9], False),
+    ("马耳他", None, r"馬爾他|馬耳他|马耳他|Malta", [14.4, 35.9], False),
+    # ---- 2026-11-05 为 Wikidata 补全新增（只作落位参考，eng=None 用备用中心点）----
+    ("北马其顿", "Macedonia", r"北馬其頓|北马其顿|馬其頓|马其顿|North\s?Macedonia|Macedonia", [21.7, 41.6], False),
+    ("摩尔多瓦", "Moldova", r"摩爾多瓦|摩尔多瓦|Moldova", [28.4, 47.4], False),
+    ("吉尔吉斯斯坦", "Kyrgyzstan", r"吉爾吉斯|吉尔吉斯|Kyrgyz", [74.6, 41.5], False),
+    ("塔吉克斯坦", "Tajikistan", r"塔吉克|Tajik", [71.0, 38.5], False),
+    ("土库曼斯坦", "Turkmenistan", r"土庫曼|土库曼|Turkmen", [59.4, 39.1], False),
+    ("塞拉利昂", "Sierra Leone", r"塞拉利昂|Sierra\s?Leone", [-11.8, 8.6], False),
+    ("利比里亚", "Liberia", r"利比里亞|利比里亚|Liberia", [-9.4, 6.4], False),
+    ("几内亚", "Guinea", r"幾內亞|几内亚|Guinea", [-10.9, 10.0], False),
+    ("科特迪瓦", "Côte d'Ivoire", r"象牙海岸|科特迪瓦|Ivory\s?Coast|Côte", [-5.5, 7.6], False),
+    ("布基纳法索", "Burkina Faso", r"布吉納法索|布基纳法索|Burkina", [-1.6, 12.3], False),
+    ("多哥", "Togo", r"多哥|Togo", [1.0, 8.5], False),
+    ("贝宁", "Benin", r"貝南|贝宁|Benin", [2.3, 9.6], False),
+    ("毛里塔尼亚", "Mauritania", r"茅利塔尼亞|毛里塔尼亞|毛里塔尼亚|Mauritania", [-10.3, 20.3], False),
+    ("厄立特里亚", "Eritrea", r"厄利垂亞|厄立特里亚|Eritrea", [39.0, 15.4], False),
+    ("吉布提", "Djibouti", r"吉布地|吉布提|Djibouti", [42.6, 11.8], False),
+    ("加蓬", "Gabon", r"加彭|加蓬|Gabon", [11.6, -0.6], False),
+    ("赤道几内亚", "Eq. Guinea", r"赤道幾內亞|赤道几内亚|Equatorial\s?Guinea", [10.3, 1.7], False),
+    ("纳米比亚", "Namibia", r"納米比亞|纳米比亚|Namibia", [17.2, -22.1], False),
+    ("博茨瓦纳", "Botswana", r"波札那|博茨瓦纳|Botswana", [24.0, -22.2], False),
+    ("卢旺达", "Rwanda", r"盧安達|卢旺达|Rwanda", [29.9, -1.9], False),
+    ("布隆迪", "Burundi", r"蒲隆地|布隆迪|Burundi", [29.9, -3.4], False),
+    ("莱索托", "Lesotho", r"賴索托|莱索托|Lesotho", [28.2, -29.6], False),
+    ("斯威士兰", "eSwatini", r"史瓦帝尼|斯威士兰|Swaziland|Eswatini", [31.5, -26.5], False),
+    ("毛里求斯", None, r"模里西斯|毛里求斯|Mauritius", [57.6, -20.2], False),
+    ("科摩罗", None, r"葛摩|科摩罗|Comoros", [43.3, -11.9], False),
+    ("塞舌尔", None, r"塞席爾|塞舌尔|Seychelles", [55.5, -4.7], False),
+    ("不丹", "Bhutan", r"不丹|Bhutan", [90.4, 27.5], False),
+    ("马尔代夫", None, r"馬爾地夫|馬爾代夫|马尔代夫|Maldives", [73.5, 3.2], False),
+    ("东帝汶", "Timor-Leste", r"東帝汶|东帝汶|Timor", [125.6, -8.9], False),
+    ("牙买加", "Jamaica", r"牙買加|牙买加|Jamaica", [-77.3, 18.1], False),
+    ("特立尼达和多巴哥", "Trinidad and Tobago", r"千里達|特立尼达|Trinidad", [-61.2, 10.5], False),
+    ("巴哈马", "Bahamas", r"巴哈馬|巴哈马|Bahamas", [-77.4, 25.0], False),
+    ("巴巴多斯", None, r"巴貝多|巴巴多斯|Barbados", [-59.5, 13.2], False),
+    ("洪都拉斯", "Honduras", r"宏都拉斯|洪都拉斯|Honduras", [-86.6, 14.8], False),
+    ("萨尔瓦多", "El Salvador", r"薩爾瓦多|萨尔瓦多|El\s?Salvador", [-88.9, 13.8], False),
+    ("尼加拉瓜", "Nicaragua", r"尼加拉瓜|Nicaragua", [-85.0, 12.9], False),
+    ("苏里南", "Suriname", r"蘇利南|苏里南|Suriname", [-55.2, 4.1], False),
+    ("圭亚那", "Guyana", r"蓋亞那|圭亚那|Guyana", [-58.7, 5.0], False),
+    # ---- 2026-11-05 二补：Wikidata 返回的太平洋/加勒比/非洲小国与地区 ----
+    ("几内亚比绍", "Guinea-Bissau", r"畿內亞比紹|几内亚比绍|Guinea.?Bissau", [-15.2, 12.1], False),
+    ("中非", "Central African Rep.", r"中非共和國|中非共和国|Central\s?African", [20.5, 7.0], False),
+    ("萨摩亚", "Samoa", r"薩摩亞|萨摩亚|Samoa", [-172.5, -13.7], False),
+    ("瓦努阿图", "Vanuatu", r"萬那杜|瓦努阿图|Vanuatu", [167.0, -16.2], False),
+    ("马绍尔群岛", None, r"馬紹爾群島|马绍尔群岛|Marshall", [171.2, 7.1], False),
+    ("密克罗尼西亚", None, r"密克羅尼西亞|密克罗尼西亚|Micronesia", [158.2, 6.9], False),
+    ("帕劳", None, r"帛琉|帕劳|Palau", [134.6, 7.3], False),
+    ("瑙鲁", None, r"諾魯|瑙鲁|Nauru", [166.9, -0.5], False),
+    ("图瓦卢", None, r"吐瓦魯|图瓦卢|Tuvalu", [179.2, -8.5], False),
+    ("基里巴斯", None, r"吉里巴斯|基里巴斯|Kiribati", [173.0, 0.0], False),
+    ("汤加", None, r"東加|汤加|Tonga", [-175.2, -21.1], False),
+    ("佛得角", None, r"維德角|佛得角|Cape\s?Verde|Cabo\s?Verde", [-23.6, 15.1], False),
+    ("圣多美和普林西比", None, r"聖多美|圣多美|São\s?Tomé", [6.6, 0.3], False),
+    ("冈比亚", "Gambia", r"甘比亞|冈比亚|Gambia", [-15.4, 13.4], False),
+    ("马拉维", "Malawi", r"馬拉威|马拉维|Malawi", [34.3, -13.2], False),
+    ("圣卢西亚", None, r"聖露西亞|圣卢西亚|Saint\s?Lucia", [-61.0, 13.9], False),
+    ("圣文森特和格林纳丁斯", None, r"聖文森|圣文森|Vincent", [-61.2, 13.2], False),
+    ("格林纳达", None, r"格瑞那達|格林纳达|Grenada", [-61.7, 12.1], False),
+    ("伯利兹", "Belize", r"貝里斯|伯利兹|Belize", [-88.7, 17.2], False),
+    ("多哥兰", None, r"多哥蘭|多哥兰|Togoland", [1.0, 8.5], False),
+    # ---- 2026-11-05 三补：Wikidata 返回的欧洲城邦/海湾小国与岛屿 ----
+    ("黑山", "Montenegro", r"蒙特內哥羅|蒙特内哥罗|黑山|Montenegro", [19.3, 42.8], False),
+    ("摩纳哥", None, r"摩納哥|摩纳哥|Monaco", [7.4, 43.7], False),
+    ("安道尔", None, r"安道爾|安道尔|Andorra", [1.6, 42.5], False),
+    ("列支敦士登", None, r"列支敦斯登|列支敦士登|Liechtenstein", [9.6, 47.2], False),
+    ("圣马力诺", None, r"聖馬利諾|圣马力诺|San\s?Marino", [12.4, 43.9], False),
+    ("巴林", None, r"巴林|Bahrain", [50.6, 26.1], False),
+    ("所罗门群岛", "Solomon Is.", r"所羅門群島|所罗门群岛|Solomon", [160.2, -9.4], False),
+    ("马恩岛", None, r"馬恩島|马恩岛|Isle\s?of\s?Man", [-4.5, 54.2], False),
+    ("纽埃", None, r"紐埃|纽埃|Niue", [-169.9, -19.1], False),
 ]
 
 REGION_RE = [(name, eng, re.compile(rx), fallback, is_cn)
@@ -299,6 +369,86 @@ def _first_sentence(s: str, limit: int = 110) -> str:
     """取定义性首句（『XX，挪威计算机科学家』），避免后文旅居/任职地干扰。"""
     s = re.split(r"[。！？!\n]", s or "", maxsplit=1)[0]
     return s[:limit]
+
+
+# 地区置信度 / 依据编码（前端 conf_names / rsrc_names 与之对应）
+CONF_EXPLICIT, CONF_HIGH, CONF_MID, CONF_WEAK, CONF_NONE = 0, 1, 2, 3, 4
+RS_NONE, RS_FLAG, RS_WIKIDATA, RS_CATS, RS_BIO, RS_TEXT, RS_NAME = 0, 1, 2, 3, 4, 5, 6
+
+
+def _vote(sources: list[tuple[str, int]]):
+    """多来源加权投票；每个来源只取「最具体」的一次命中，返回 (地区名, 总分, 命中来源数)。"""
+    score: collections.Counter[str] = collections.Counter()
+    hits: collections.Counter[str] = collections.Counter()
+    for src, weight in sources:
+        if not src:
+            continue
+        for name, _eng, rx, _fb, _cn in REGION_RE:
+            if rx.search(src):
+                score[name] += weight
+                hits[name] += 1
+                break
+    if not score:
+        return "", 0, 0
+    name, total = score.most_common(1)[0]
+    return name, total, hits[name]
+
+
+def _flag_region(flag: str) -> str:
+    if not flag:
+        return ""
+    if re.search(r"台|臺|Taiwan", flag):
+        return "中国台湾"
+    if re.search(r"香|港|HK|Hong", flag):
+        return "中国香港"
+    if re.search(r"澳|Mac", flag):
+        return "中国澳门"
+    if re.search(r"\(美\)|美籍", flag):
+        return "美国"
+    for k, v in FLAG_MAP.items():
+        if k in flag:
+            return v
+    return ""
+
+
+def guess_region_full(flag: str, cat: str, bio: str, head: str, name_en: str,
+                      cats: str = "", occ: str = "", text: str = "",
+                      name_zh: str = "", name_trad: str = "", aliases: str = "",
+                      wd: dict | None = None):
+    """返回 (规范地区名, 置信度, 依据编码)。
+
+    优先级：原库 flag 标记 > Wikidata 结构化字段 > 摘要/分类 > 维基全部分类 > 正文 > 姓名。
+    旧版 guess_region 的判定保持不变（保证既有 61.2% 定位结果稳定），
+    扩展来源只用于补齐原先「无线索」的记录。
+    """
+    fr = _flag_region(flag)
+    if fr:
+        return fr, CONF_EXPLICIT, RS_FLAG
+    if wd and wd.get("region"):
+        return wd["region"], min(CONF_MID, max(CONF_HIGH, int(wd.get("conf", 2)))), RS_WIKIDATA
+
+    base = guess_region(flag, cat, bio, head, name_en)
+    if base:
+        return base, CONF_MID, RS_CATS
+
+    # ---- 扩展来源：原先完全无线索者 ----
+    cats_s = (cats or "") + " " + (occ or "")
+    sources = [
+        (cats_s[:600], 3),
+        (_first_sentence(text), 2),
+        ((text or "")[:1200], 1),
+        ((bio or "")[:400], 1),
+        ((head or "")[:900], 1),
+    ]
+    name_s = " ".join(x for x in (name_zh, name_trad, aliases, name_en) if x)
+    sources.append((name_s, 1))
+    reg, total, nhit = _vote(sources)
+    if reg:
+        # 只有姓名命中（如外国音译名不含地名）时不应据此落位
+        src_from_name = (reg and _vote([(name_s, 1)])[0] == reg
+                         and _vote(sources[:-1])[0] != reg)
+        return reg, CONF_WEAK, RS_NAME if src_from_name else RS_CATS
+    return "", CONF_NONE, RS_NONE
 
 
 def guess_region(flag: str, cat: str, bio: str, head: str, name_en: str) -> str:
@@ -395,11 +545,65 @@ def parse_date(s: str):
     return (y, 0, 0, 2)
 
 
+WD_FILE = HERE / "data" / "wd_regions.json"
+SHARD_SIZE = 1000            # 每人 id // 1000 → 一个懒加载分片
+MAX_BIO_CHARS = 30000        # 超长条目截断，避免单片过大
+CAUSES = ["未知", "心脑血管", "癌症", "疾病", "呼吸/感染", "自然衰老",
+          "自杀", "事故", "遇害", "其他"]
+CONF_NAMES = ["原库标记", "Wikidata·高", "文本推断·中", "文本推断·弱", "未定位"]
+RSRC_NAMES = ["无", "原库地区标记", "Wikidata 国籍/出生地", "维基分类/摘要",
+              "生平摘要", "维基正文", "姓名线索"]
+
+
+def guess_field_full(cat: str, bio: str, cats: str, name_zh: str) -> str:
+    """领域推断：分类 > 摘要 > 全部分类 > 姓名中的消歧义括注（如「(足球运动员)」）。"""
+    f = guess_field(cat, bio)
+    if f not in ("分类缺失", "其他"):
+        return f
+    src = (cats or "")[:400]
+    if src:
+        for name, rx in FIELD_RE:
+            if rx.search(src):
+                return name
+    m = re.search(r"[（(]([^）)]{2,20})[）)]\s*$", name_zh or "")
+    if m:
+        for name, rx in FIELD_RE:
+            if rx.search(m.group(1)):
+                return name
+    return f
+
+
+def load_wd() -> dict:
+    if not WD_FILE.exists():
+        return {}
+    try:
+        return json.loads(WD_FILE.read_text(encoding="utf-8")).get("items", {})
+    except Exception as e:
+        print("Wikidata 补全文件读取失败（忽略）:", e)
+        return {}
+
+
+def occ_text(raw: str) -> str:
+    try:
+        d = json.loads(raw or "{}")
+    except Exception:
+        return ""
+    out = []
+    if isinstance(d, dict):
+        for v in d.values():
+            if isinstance(v, list):
+                out.extend(str(x) for x in v)
+    elif isinstance(d, list):
+        out.extend(str(x) for x in d)
+    return " ".join(out)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=str(DB))
     ap.add_argument("--out", default=str(DEFAULT_OUT))
     ap.add_argument("--check", action="store_true", help="只打印统计，不写文件")
+    ap.add_argument("--no-bio", action="store_true", help="不生成完整生平分片")
     args = ap.parse_args()
 
     for f in (LAND_JSON, COUNTRIES_JSON):
@@ -413,7 +617,6 @@ def main():
     path = land_svg_path(land_topo)
     cents = country_centroids(ctry_topo)
 
-    # 地区中心点：优先用国家几何算出的质心，缺失（小国/地区）用备用坐标
     reg_points, reg_cn = {}, {}
     miss_eng = []
     for name, eng, _rx, fb, is_cn in REGIONS:
@@ -427,17 +630,25 @@ def main():
     reg_names = [r[0] for r in REGIONS]
     reg_idx = {n: i for i, n in enumerate(reg_names)}
 
+    wd = load_wd()
     con = sqlite3.connect(args.db)
     con.row_factory = sqlite3.Row
-    q = """SELECT p.id, p.name_zh, p.name_en, p.born_date, p.died_date, p.cat,
-                  p.region, p.bio_short, p.wiki_zh_url, p.excluded,
-                  substr(r.zh_text, 1, 500) AS head
+    q = """SELECT p.id, p.name_zh, p.name_trad, p.name_en, p.aliases,
+                  p.born_date, p.died_date, p.cat, p.region, p.bio_short,
+                  p.wiki_zh_url, p.wiki_zh_title, p.excluded, p.cause_cat,
+                  p.cause_raw, p.occupation,
+                  r.zh_text AS text, r.zh_cats AS cats
            FROM person p LEFT JOIN raw r ON r.person_id = p.id"""
     rows = []
+    shards: dict[int, dict] = collections.defaultdict(dict)
     stats = collections.Counter()
     region_count = collections.Counter()
     field_count = collections.Counter()
     year_count = collections.Counter()
+    cause_count = collections.Counter()
+    conf_count = collections.Counter()
+    rsrc_count = collections.Counter()
+    cause_idx = {c: i for i, c in enumerate(CAUSES)}
 
     for x in con.execute(q):
         if x["excluded"]:
@@ -451,22 +662,57 @@ def main():
         age = (y - by) if by and 0 < y - by <= 122 else 0
         cat = (x["cat"] or "").strip()
         bio = (x["bio_short"] or "").strip()
-        head = (x["head"] or "").strip()
-        reg = guess_region((x["region"] or "").strip(), cat, bio, head, x["name_en"] or "")
-        fld = guess_field(cat, bio)
+        text = x["text"] or ""
+        head = text[:500]
+        cats = (x["cats"] or "").strip()
+        occ = occ_text(x["occupation"] or "")
+        pid = x["id"]
+        wdr = wd.get(str(pid))
+        reg, conf, rsrc = guess_region_full(
+            (x["region"] or "").strip(), cat, bio, head, x["name_en"] or "",
+            cats=cats, occ=occ, text=text, name_zh=x["name_zh"] or "",
+            name_trad=x["name_trad"] or "", aliases=x["aliases"] or "", wd=wdr)
+        fld = guess_field_full(cat, bio, cats + " " + occ, x["name_zh"] or "")
+        cau = cause_idx.get((x["cause_cat"] or "未知").strip(), 0)
         region_count[reg or "未定位"] += 1
         field_count[fld] += 1
         year_count[y] += 1
+        cause_count[CAUSES[cau]] += 1
+        conf_count[CONF_NAMES[conf]] += 1
+        rsrc_count[RSRC_NAMES[rsrc]] += 1
+        if rsrc == RS_WIKIDATA:
+            stats["wd_used"] += 1
+        hasbio = 1 if text.strip() else 0
         rows.append([
             x["name_zh"] or "",                 # 0 姓名
             y, mo, d, prec,                    # 1..4 逝世日期
             by, age,                           # 5..6 出生年 / 享年
-            reg_idx.get(reg, -1),              # 7 地区（规范中文名下标，-1=未定位）
+            reg_idx.get(reg, -1),              # 7 地区下标（-1=未定位）
             fld,                               # 8 领域
             cat[:36],                          # 9 原始分类（短）
-            re.sub(r"\s+", " ", bio)[:110],    # 10 摘要（详情卡片用）
+            re.sub(r"\s+", " ", bio)[:110],    # 10 摘要
             x["wiki_zh_url"] or "",            # 11 维基链接
+            pid,                               # 12 数据库 id（懒加载全文用）
+            cau,                               # 13 死因类别下标
+            conf,                              # 14 地区置信度
+            rsrc,                              # 15 地区依据
+            hasbio,                            # 16 是否有完整生平
         ])
+        if hasbio and not args.no_bio:
+            t = text.strip()
+            if len(t) > MAX_BIO_CHARS:
+                t = t[:MAX_BIO_CHARS] + "\n\n［原文过长，此处仅保留前 %d 字；完整内容见维基原文］" % MAX_BIO_CHARS
+            try:
+                al = json.loads(x["aliases"] or "[]")
+            except Exception:
+                al = []
+            shards[pid // SHARD_SIZE][pid] = {
+                "t": t,
+                "cr": (x["cause_raw"] or "").strip(),
+                "cs": (cats or occ)[:300],
+                "al": "、".join(str(a) for a in al[:6]),
+                "ti": (x["wiki_zh_title"] or "").strip(),
+            }
         stats["kept"] += 1
     con.close()
 
@@ -481,21 +727,33 @@ def main():
         "region_points": [reg_points[n] for n in reg_names],
         "region_cn": [reg_cn[n] for n in reg_names],
         "fields": [f for f, _ in field_count.most_common()],
+        "causes": CAUSES,
+        "conf_names": CONF_NAMES,
+        "rsrc_names": RSRC_NAMES,
+        "shard_size": SHARD_SIZE,
+        "shards": len(shards),
+        "bio_count": sum(len(v) for v in shards.values()),
+        "wd_count": stats["wd_used"],
         "land": path,
         "rows": rows,
-        # 列下标说明，便于前端与后续维护
-        "cols": ["n", "y", "m", "d", "prec", "by", "age", "reg", "fld", "cat", "bio", "wiki"],
-        "note": "地区为按维基分类/正文推断的定位参考值，非事实结论；未定位者不落地图但完整保留于名单。",
+        "cols": ["n", "y", "m", "d", "prec", "by", "age", "reg", "fld", "cat",
+                 "bio", "wiki", "id", "cause", "conf", "rsrc", "hasbio"],
+        "note": "地区为按 Wikidata 结构化字段 / 维基分类 / 正文推断的落位参考值，非事实结论；未定位者不落地图但完整保留于名单。",
     }
 
     print("=== 生成统计 ===")
     print("保留记录:", stats["kept"], " 排除非人物:", stats["excluded"], " 无有效日期:", stats["no_date"])
     print("年份跨度:", payload["span"], " 年数:", len(years))
-    print("已定位:", sum(v for k, v in region_count.items() if k != "未定位"),
-          "(%.1f%%)" % (100 * sum(v for k, v in region_count.items() if k != "未定位") / max(1, stats["kept"])),
-          " 未定位:", region_count["未定位"])
+    located = sum(v for k, v in region_count.items() if k != "未定位")
+    print("已定位:", located, "(%.1f%%)" % (100 * located / max(1, stats["kept"])),
+          " 未定位:", region_count["未定位"], " Wikidata 补齐:", stats["wd_used"])
+    print("置信度:", conf_count.most_common())
+    print("地区依据:", rsrc_count.most_common())
     print("地区 top12:", region_count.most_common(12))
     print("领域 top10:", field_count.most_common(10))
+    print("死因:", cause_count.most_common())
+    print("完整生平:", payload["bio_count"], "人 /", len(shards), "分片",
+          " 合计 %.1f MB" % (sum(len(v["t"]) for s in shards.values() for v in s.values()) / 1e6))
     print("陆地轮廓 path 长度:", len(path), " 国家质心数:", len(cents),
           " 未匹配英文名:", len(miss_eng), miss_eng[:8])
     print("地区表条目:", len(reg_names))
@@ -508,6 +766,15 @@ def main():
     body = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     f.write_text("window.JHSTAR=" + body + ";\n", encoding="utf-8")
     print("已写出:", f, "%.2f MB" % (f.stat().st_size / 1e6))
+
+    if not args.no_bio:
+        for si, items in sorted(shards.items()):
+            parts = ["o[%d]=%s;" % (k, json.dumps(v, ensure_ascii=False, separators=(",", ":")))
+                     for k, v in sorted(items.items())]
+            js = "(function(o){%s})(window.JHBIO=window.JHBIO||{});\n" % "".join(parts)
+            fp = out / ("bio-%03d.js" % si)
+            fp.write_text(js, encoding="utf-8")
+        print("已写出完整生平分片:", len(shards), "个文件 ->", out)
 
 
 if __name__ == "__main__":
